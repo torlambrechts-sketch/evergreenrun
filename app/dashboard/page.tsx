@@ -43,6 +43,9 @@ export default async function DashboardPage() {
           <Link href="/plan" className={buttonVariants()}>
             This week&apos;s plan
           </Link>
+          <Link href="/strength" className={buttonVariants({ variant: "outline" })}>
+            Strength
+          </Link>
           <Link href="/feel" className={buttonVariants({ variant: "outline" })}>
             How am I feeling?
           </Link>

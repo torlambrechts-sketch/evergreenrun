@@ -64,6 +64,15 @@ export const WalkRunProgramSchema = z.object({
 });
 export type WalkRunProgram = z.infer<typeof WalkRunProgramSchema>;
 
+// ---- Strength program (which exercises make up sessions A and B) ----
+export const StrengthProgramSchema = z.object({
+  /** Ordered exercise slugs for session A (competence → load). ⟨advisor⟩ */
+  sessionA: z.array(z.string()).min(1),
+  /** Ordered exercise slugs for session B. ⟨advisor⟩ */
+  sessionB: z.array(z.string()).min(1),
+});
+export type StrengthProgram = z.infer<typeof StrengthProgramSchema>;
+
 // ---- Weekly plan rules ----
 export const WeeklyPlanRulesSchema = z.object({
   /** Minimum share of running that must be easy (spec: ~80%). */
@@ -183,5 +192,6 @@ export const RuleSetSchema = z.object({
   foundationProgram: FoundationProgramSchema,
   walkRunProgram: WalkRunProgramSchema,
   safetyRules: SafetyRulesSchema,
+  strengthProgram: StrengthProgramSchema,
 });
 export type RuleSet = z.infer<typeof RuleSetSchema>;
