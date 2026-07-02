@@ -43,7 +43,11 @@ function formatDate(started: string | null): string {
   });
 }
 
-export default async function RunsPage() {
+export default async function RunsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ import?: string }>;
+}) {
   const supabase = await createClient();
   const {
     data: { user },
@@ -51,15 +55,32 @@ export default async function RunsPage() {
   if (!user) redirect("/login");
 
   const runs = await listMyRuns();
+  const { import: importResult } = await searchParams;
 
   return (
     <main className="mx-auto w-full max-w-2xl flex-1 p-6">
-      <div className="mb-6 flex items-center justify-between">
+      <div className="mb-6 flex items-center justify-between gap-3">
         <h1 className="text-2xl font-semibold tracking-tight">My runs</h1>
-        <Link href="/runs/new" className={buttonVariants({ size: "sm" })}>
-          Log a run
-        </Link>
+        <div className="flex items-center gap-2">
+          <Link href="/runs/import" className={buttonVariants({ size: "sm", variant: "outline" })}>
+            Import file
+          </Link>
+          <Link href="/runs/new" className={buttonVariants({ size: "sm" })}>
+            Log a run
+          </Link>
+        </div>
       </div>
+
+      {importResult === "ok" && (
+        <p className="mb-4 text-sm text-muted-foreground" role="status">
+          Imported — your run is in the list below.
+        </p>
+      )}
+      {importResult === "duplicate" && (
+        <p className="mb-4 text-sm text-muted-foreground" role="status">
+          That run was already logged — nothing to add.
+        </p>
+      )}
 
       {runs.length === 0 ? (
         <Card>
