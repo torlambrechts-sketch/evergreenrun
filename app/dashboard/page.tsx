@@ -40,7 +40,10 @@ export default async function DashboardPage() {
               ? "Your runner profile is ready. Next up: logging a run."
               : "We'll set up your runner profile next."}
           </p>
-          <Link href="/runs" className={buttonVariants()}>
+          <Link href="/score" className={buttonVariants()}>
+            My Durability Score
+          </Link>
+          <Link href="/runs" className={buttonVariants({ variant: "outline" })}>
             My runs
           </Link>
           <form action="/auth/signout" method="post">
