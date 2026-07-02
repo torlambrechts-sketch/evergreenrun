@@ -5,6 +5,7 @@ import {
 import { intensityZones } from "./intensity-zones";
 import { foundationProgram, walkRunProgram } from "./plan-program";
 import { safetyRules } from "./safety";
+import { strengthProgram } from "./strength-program";
 import { RuleSetSchema, type RuleSet } from "./schema";
 import { RULE_SET_VERSION } from "./version";
 import { weeklyPlanRules } from "./weekly-plan";
@@ -48,6 +49,7 @@ function loadRuleSet(): Readonly<RuleSet> {
     foundationProgram,
     walkRunProgram,
     safetyRules,
+    strengthProgram,
   };
 
   // Validate at the boundary (Zod). Fails loudly on any bad number.
