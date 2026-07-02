@@ -13,18 +13,21 @@ export default function Home() {
         </p>
       </div>
       <div className="flex flex-col items-center gap-3 sm:flex-row">
-        <Link href="/calculator" className={buttonVariants({ size: "lg" })}>
-          Check your Durability Score
+        <Link href="/signup" className={buttonVariants({ size: "lg" })}>
+          Get started
         </Link>
         <Link
-          href="/login"
+          href="/calculator"
           className={buttonVariants({ size: "lg", variant: "outline" })}
         >
-          Sign in
+          Try the free score
         </Link>
       </div>
       <p className="text-xs text-muted-foreground">
-        Free 2-minute check-in — no account needed.
+        Already have an account?{" "}
+        <Link href="/login" className="font-semibold text-primary">
+          Log in
+        </Link>
       </p>
     </main>
   );
