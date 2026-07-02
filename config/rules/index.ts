@@ -3,6 +3,7 @@ import {
   durabilityIndexWeights,
 } from "./durability-index";
 import { intensityZones } from "./intensity-zones";
+import { foundationProgram, walkRunProgram } from "./plan-program";
 import { RuleSetSchema, type RuleSet } from "./schema";
 import { RULE_SET_VERSION } from "./version";
 import { weeklyPlanRules } from "./weekly-plan";
@@ -43,6 +44,8 @@ function loadRuleSet(): Readonly<RuleSet> {
     weeklyPlanRules,
     durabilityIndexWeights,
     durabilityIndexScoring,
+    foundationProgram,
+    walkRunProgram,
   };
 
   // Validate at the boundary (Zod). Fails loudly on any bad number.
