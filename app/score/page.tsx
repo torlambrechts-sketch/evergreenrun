@@ -1,9 +1,9 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { createClient } from "@/lib/supabase/server";
 import { getLatestSnapshot } from "@/lib/db/durability";
 import { updateScore } from "./actions";
+import { PageHeader } from "@/components/page-header";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -43,14 +43,7 @@ export default async function ScorePage() {
 
   return (
     <main className="mx-auto w-full max-w-xl flex-1 p-6">
-      <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-semibold tracking-tight">
-          Durability Score
-        </h1>
-        <Link href="/dashboard" className="text-sm text-muted-foreground underline">
-          Dashboard
-        </Link>
-      </div>
+      <PageHeader eyebrow="Durability" title="Your baseline" />
 
       {!snapshot ? (
         <Card>
@@ -72,7 +65,7 @@ export default async function ScorePage() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-baseline gap-3">
-                <span className="text-5xl font-semibold tabular-nums">
+                <span className="font-mono text-5xl font-bold text-primary">
                   {snapshot.score}
                 </span>
                 <span className="text-sm font-normal text-muted-foreground">
@@ -92,7 +85,7 @@ export default async function ScorePage() {
                   <div key={key} className="grid gap-1">
                     <div className="flex items-baseline justify-between text-sm">
                       <span className="font-medium">{label}</span>
-                      <span className="tabular-nums text-muted-foreground">
+                      <span className="font-mono text-muted-foreground">
                         {value} · weight {entry?.weight ?? "—"}
                       </span>
                     </div>

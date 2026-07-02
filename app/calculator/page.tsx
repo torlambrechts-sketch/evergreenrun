@@ -78,10 +78,13 @@ export default function CalculatorPage() {
   return (
     <main className="mx-auto w-full max-w-xl flex-1 p-6">
       <div className="mb-6">
-        <h1 className="text-2xl font-semibold tracking-tight">
+        <div className="font-mono text-[0.7rem] font-bold uppercase tracking-[0.14em] text-primary">
+          Free check-in
+        </div>
+        <h1 className="mt-2 text-[1.7rem] font-extrabold leading-none tracking-tight">
           Your Durability Score
         </h1>
-        <p className="mt-1 text-sm text-muted-foreground">
+        <p className="mt-2 text-sm text-muted-foreground">
           A 2-minute check-in — no account needed. This is a baseline, not a
           grade: a starting point, not a verdict.
         </p>
@@ -124,7 +127,7 @@ export default function CalculatorPage() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-baseline gap-3">
-                <span className="text-5xl font-semibold tabular-nums">{result.score}</span>
+                <span className="text-5xl font-semibold font-mono">{result.score}</span>
                 <span className="text-sm font-normal text-muted-foreground">/ 100</span>
               </CardTitle>
               <CardDescription>
@@ -138,7 +141,7 @@ export default function CalculatorPage() {
                   <div key={key} className="grid gap-1">
                     <div className="flex items-baseline justify-between text-sm">
                       <span className="font-medium">{label}</span>
-                      <span className="tabular-nums text-muted-foreground">{entry.subScore}</span>
+                      <span className="font-mono text-muted-foreground">{entry.subScore}</span>
                     </div>
                     <div className="h-2 overflow-hidden rounded-full bg-muted">
                       <div

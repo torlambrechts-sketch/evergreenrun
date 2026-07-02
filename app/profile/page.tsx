@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 
 import { createClient } from "@/lib/supabase/server";
 import { getMyRunnerProfile } from "@/lib/db/runner-profile";
+import { PageHeader } from "@/components/page-header";
 import { ProfileForm } from "./profile-form";
 
 export default async function ProfilePage() {
@@ -15,7 +16,7 @@ export default async function ProfilePage() {
 
   return (
     <main className="mx-auto w-full max-w-md flex-1 p-6">
-      <h1 className="mb-6 text-2xl font-semibold tracking-tight">Profile</h1>
+      <PageHeader eyebrow="Account" title="Profile" />
       <ProfileForm
         defaults={{
           displayName: profile?.display_name ?? "",

@@ -1,9 +1,9 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentPlan } from "@/lib/db/plan";
 import { generateThisWeeksPlan } from "./actions";
+import { PageHeader } from "@/components/page-header";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -40,12 +40,7 @@ export default async function PlanPage() {
 
   return (
     <main className="mx-auto w-full max-w-xl flex-1 p-6">
-      <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-semibold tracking-tight">This week</h1>
-        <Link href="/dashboard" className="text-sm text-muted-foreground underline">
-          Dashboard
-        </Link>
-      </div>
+      <PageHeader eyebrow="Training plan" title="This week" />
 
       {!current ? (
         <Card>
@@ -92,7 +87,7 @@ export default async function PlanPage() {
                         </span>
                       )}
                     </span>
-                    <span className="text-sm tabular-nums text-muted-foreground">
+                    <span className="text-sm font-mono text-muted-foreground">
                       {minutes(s.target_duration_s)}
                     </span>
                   </li>

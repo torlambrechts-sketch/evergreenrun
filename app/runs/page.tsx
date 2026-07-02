@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 
 import { createClient } from "@/lib/supabase/server";
 import { listMyRuns } from "@/lib/db/run-activity";
+import { PageHeader } from "@/components/page-header";
 import { buttonVariants } from "@/components/ui/button";
 import {
   Card,
@@ -59,17 +60,20 @@ export default async function RunsPage({
 
   return (
     <main className="mx-auto w-full max-w-2xl flex-1 p-6">
-      <div className="mb-6 flex items-center justify-between gap-3">
-        <h1 className="text-2xl font-semibold tracking-tight">My runs</h1>
-        <div className="flex items-center gap-2">
-          <Link href="/runs/import" className={buttonVariants({ size: "sm", variant: "outline" })}>
-            Import file
-          </Link>
-          <Link href="/runs/new" className={buttonVariants({ size: "sm" })}>
-            Log a run
-          </Link>
-        </div>
-      </div>
+      <PageHeader
+        eyebrow="Activity"
+        title="My runs"
+        action={
+          <div className="flex items-center gap-2">
+            <Link href="/runs/import" className={buttonVariants({ size: "sm", variant: "outline" })}>
+              Import file
+            </Link>
+            <Link href="/runs/new" className={buttonVariants({ size: "sm" })}>
+              Log a run
+            </Link>
+          </div>
+        }
+      />
 
       {importResult === "ok" && (
         <p className="mb-4 text-sm text-muted-foreground" role="status">
@@ -122,12 +126,6 @@ export default async function RunsPage({
           ))}
         </ul>
       )}
-
-      <div className="mt-6">
-        <Link href="/dashboard" className="text-sm text-muted-foreground underline">
-          Back to dashboard
-        </Link>
-      </div>
     </main>
   );
 }

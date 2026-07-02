@@ -4,6 +4,7 @@ import "./globals.css";
 
 import { createClient } from "@/lib/supabase/server";
 import { AppHeader } from "@/components/app-header";
+import { AppSidebar } from "@/components/app-sidebar";
 
 const manrope = Manrope({
   variable: "--font-sans",
@@ -28,17 +29,24 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  let signedIn = false;
+  let account: { name: string; email: string } | null = null;
   try {
     const supabase = await createClient();
     const {
       data: { user },
     } = await supabase.auth.getUser();
-    signedIn = Boolean(user);
+    if (user) {
+      const { data: profile } = await supabase
+        .from("runner_profile")
+        .select("display_name")
+        .eq("user_id", user.id)
+        .maybeSingle();
+      account = { name: profile?.display_name ?? "", email: user.email ?? "" };
+    }
   } catch {
-    // Misconfiguration or auth hiccup — render without the app header rather
-    // than failing the whole page.
-    signedIn = false;
+    // Misconfiguration or auth hiccup — render without app chrome rather than
+    // failing the whole page.
+    account = null;
   }
 
   return (
@@ -46,9 +54,18 @@ export default async function RootLayout({
       lang="en"
       className={`${manrope.variable} ${spaceMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
-        {signedIn && <AppHeader />}
-        {children}
+      <body className="flex min-h-full flex-col">
+        {account ? (
+          <div className="flex min-h-full flex-1">
+            <AppSidebar user={account} />
+            <div className="flex min-w-0 flex-1 flex-col">
+              <AppHeader />
+              {children}
+            </div>
+          </div>
+        ) : (
+          children
+        )}
       </body>
     </html>
   );

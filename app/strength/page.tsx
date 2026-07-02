@@ -1,10 +1,10 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { createClient } from "@/lib/supabase/server";
 import { getStrengthSession, type StrengthSessionType } from "@/lib/db/strength";
 import type { ResolvedExercise } from "@/lib/engine/strength";
 import { logStrength } from "./actions";
+import { PageHeader } from "@/components/page-header";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -36,7 +36,7 @@ function SessionCard({
               <div className="flex items-baseline justify-between gap-3">
                 <span className="text-sm font-medium">{ex.name}</span>
                 {ex.tempo && (
-                  <span className="text-xs tabular-nums text-muted-foreground">
+                  <span className="text-xs font-mono text-muted-foreground">
                     tempo {ex.tempo}
                   </span>
                 )}
@@ -80,12 +80,7 @@ export default async function StrengthPage({
 
   return (
     <main className="mx-auto w-full max-w-xl flex-1 p-6">
-      <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-semibold tracking-tight">Strength</h1>
-        <Link href="/dashboard" className="text-sm text-muted-foreground underline">
-          Dashboard
-        </Link>
-      </div>
+      <PageHeader eyebrow="Strength" title="Build durability" />
 
       {logged && (
         <p className="mb-4 text-sm text-muted-foreground" role="status">

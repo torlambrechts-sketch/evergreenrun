@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useActionState } from "react";
 
 import { logFeel, type FeelState } from "./actions";
+import { PageHeader } from "@/components/page-header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -53,20 +54,16 @@ export default function FeelPage() {
     const a = state.assessment;
     return (
       <main className="mx-auto w-full max-w-md flex-1 p-6">
+        <PageHeader eyebrow="Check-in" title="How you're feeling" />
         <Card className={assessmentTone(a.severity)}>
           <CardHeader>
             <CardTitle>{a.headline}</CardTitle>
           </CardHeader>
           <CardContent className="grid gap-4">
             <p className="text-sm text-muted-foreground">{a.detail}</p>
-            <div className="flex items-center gap-3">
-              <Link href="/dashboard" className="text-sm font-medium underline">
-                Back to dashboard
-              </Link>
-              <Link href="/feel" className="text-sm text-muted-foreground underline">
-                Log another
-              </Link>
-            </div>
+            <Link href="/feel" className="text-sm font-medium text-primary underline">
+              Log another
+            </Link>
           </CardContent>
         </Card>
       </main>
@@ -75,12 +72,13 @@ export default function FeelPage() {
 
   return (
     <main className="mx-auto w-full max-w-md flex-1 p-6">
+      <PageHeader eyebrow="Check-in" title="How are you feeling?" />
       <Card>
         <CardHeader>
-          <CardTitle>How are you feeling?</CardTitle>
+          <CardTitle>A quick check-in</CardTitle>
           <CardDescription>
-            A quick check-in. There are no wrong answers — this just helps keep
-            your running sustainable.
+            There are no wrong answers — this just helps keep your running
+            sustainable.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -130,14 +128,9 @@ export default function FeelPage() {
                 {state.message}
               </p>
             )}
-            <div className="flex items-center gap-3">
-              <Button type="submit" disabled={pending}>
-                {pending ? "Saving…" : "Save check-in"}
-              </Button>
-              <Link href="/dashboard" className="text-sm text-muted-foreground underline">
-                Cancel
-              </Link>
-            </div>
+            <Button type="submit" disabled={pending}>
+              {pending ? "Saving…" : "Save check-in"}
+            </Button>
           </form>
         </CardContent>
       </Card>

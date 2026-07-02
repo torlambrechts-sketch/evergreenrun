@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 
 import { createClient } from "@/lib/supabase/server";
 import { getCoachNote } from "@/lib/coach/gather";
+import { PageHeader } from "@/components/page-header";
 import { buttonVariants } from "@/components/ui/button";
 import {
   Card,
@@ -23,12 +24,7 @@ export default async function CoachPage() {
 
   return (
     <main className="mx-auto w-full max-w-xl flex-1 p-6">
-      <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-semibold tracking-tight">Your week</h1>
-        <Link href="/dashboard" className="text-sm text-muted-foreground underline">
-          Dashboard
-        </Link>
-      </div>
+      <PageHeader eyebrow="Weekly note" title="A note for your week" />
 
       {!note ? (
         <Card>
