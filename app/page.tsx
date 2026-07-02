@@ -12,9 +12,20 @@ export default function Home() {
           running without overdoing it.
         </p>
       </div>
-      <Link href="/login" className={buttonVariants({ size: "lg" })}>
-        Get started
-      </Link>
+      <div className="flex flex-col items-center gap-3 sm:flex-row">
+        <Link href="/calculator" className={buttonVariants({ size: "lg" })}>
+          Check your Durability Score
+        </Link>
+        <Link
+          href="/login"
+          className={buttonVariants({ size: "lg", variant: "outline" })}
+        >
+          Sign in
+        </Link>
+      </div>
+      <p className="text-xs text-muted-foreground">
+        Free 2-minute check-in — no account needed.
+      </p>
     </main>
   );
 }
