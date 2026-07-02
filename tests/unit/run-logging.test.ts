@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { isoWeekStart, isoWeekEnd } from "@/lib/util/week";
-import { manualRunSourceHash } from "@/lib/util/source-hash";
+import { runContentHash } from "@/lib/util/source-hash";
 import { summariseWeek } from "@/lib/db/weekly-load";
 
 describe("isoWeekStart / isoWeekEnd", () => {
@@ -18,18 +18,18 @@ describe("isoWeekStart / isoWeekEnd", () => {
   });
 });
 
-describe("manualRunSourceHash", () => {
+describe("runContentHash", () => {
   const base = { startedOn: "2026-07-02", distanceM: 5000, durationS: 1800 };
 
-  it("is deterministic for identical runs (enables dedup)", () => {
-    expect(manualRunSourceHash(base)).toBe(manualRunSourceHash({ ...base }));
+  it("is deterministic for identical runs (enables cross-source dedup)", () => {
+    expect(runContentHash(base)).toBe(runContentHash({ ...base }));
   });
 
   it("differs when any field differs", () => {
-    const h = manualRunSourceHash(base);
-    expect(manualRunSourceHash({ ...base, distanceM: 5001 })).not.toBe(h);
-    expect(manualRunSourceHash({ ...base, durationS: 1801 })).not.toBe(h);
-    expect(manualRunSourceHash({ ...base, startedOn: "2026-07-03" })).not.toBe(h);
+    const h = runContentHash(base);
+    expect(runContentHash({ ...base, distanceM: 5001 })).not.toBe(h);
+    expect(runContentHash({ ...base, durationS: 1801 })).not.toBe(h);
+    expect(runContentHash({ ...base, startedOn: "2026-07-03" })).not.toBe(h);
   });
 });
 
