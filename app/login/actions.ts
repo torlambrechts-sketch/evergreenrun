@@ -1,56 +1,39 @@
 "use server";
 
-import { headers } from "next/headers";
-import { z } from "zod";
+import { redirect } from "next/navigation";
 
 import { createClient } from "@/lib/supabase/server";
+import { LoginSchema } from "@/lib/validation/auth";
 
-const LoginSchema = z.object({
-  email: z.string().trim().toLowerCase().email("Enter a valid email address."),
-  // Where to send the user after they confirm the magic link.
-  next: z.string().startsWith("/").optional(),
-});
+export type LoginState = { status: "idle" } | { status: "error"; message: string };
 
-export type LoginState =
-  | { status: "idle" }
-  | { status: "sent"; email: string }
-  | { status: "error"; message: string };
-
-/**
- * Sends a magic-link / email OTP. Kindness rule: copy is plain and never blames
- * the user. We do not reveal whether an account already exists.
- */
-export async function sendMagicLink(
+export async function logIn(
   _prev: LoginState,
   formData: FormData,
 ): Promise<LoginState> {
   const parsed = LoginSchema.safeParse({
     email: formData.get("email"),
+    password: formData.get("password"),
     next: formData.get("next") || undefined,
   });
-
   if (!parsed.success) {
     return {
       status: "error",
-      message: parsed.error.issues[0]?.message ?? "Enter a valid email address.",
+      message: parsed.error.issues[0]?.message ?? "Please check your details.",
     };
   }
 
-  const { email, next } = parsed.data;
+  const { email, password, next } = parsed.data;
   const supabase = await createClient();
-
-  const origin = (await headers()).get("origin") ?? "";
-  const redirectTo = new URL("/auth/callback", origin);
-  if (next) redirectTo.searchParams.set("next", next);
-
-  const { error } = await supabase.auth.signInWithOtp({
-    email,
-    options: { emailRedirectTo: redirectTo.toString() },
-  });
+  const { error } = await supabase.auth.signInWithPassword({ email, password });
 
   if (error) {
-    return { status: "error", message: "Could not send the link. Try again." };
+    const message =
+      error.message === "Email not confirmed"
+        ? "Please confirm your email first — check your inbox for the link."
+        : "That email and password don't match. Try again.";
+    return { status: "error", message };
   }
 
-  return { status: "sent", email };
+  redirect(next && next.startsWith("/") ? next : "/dashboard");
 }
