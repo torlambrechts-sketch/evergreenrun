@@ -31,6 +31,39 @@ export const IntensityZoneSchema = z
   });
 export type IntensityZone = z.infer<typeof IntensityZoneSchema>;
 
+// ---- Program skeletons (which day is which) ----
+export const SESSION_TYPES = [
+  "easy",
+  "quality",
+  "long",
+  "strength",
+  "rest",
+  "walk_run",
+] as const;
+
+export const ProgramDaySchema = z.object({
+  dayOfWeek: z.number().int().min(0).max(6), // 0 = Monday
+  type: z.enum(SESSION_TYPES),
+});
+export type ProgramDay = z.infer<typeof ProgramDaySchema>;
+
+export const FoundationProgramSchema = z.object({
+  /** Starting weekly running minutes for a runner with no load history. ⟨advisor⟩ */
+  startingWeeklyMinutes: z.number().positive(),
+  /** Share of the week's minutes given to the one quality session. ⟨advisor⟩ */
+  qualityShareOfWeek: share,
+  /** The 7-day skeleton (which day is which session type). ⟨advisor⟩ */
+  days: z.array(ProgramDaySchema).length(7),
+});
+export type FoundationProgram = z.infer<typeof FoundationProgramSchema>;
+
+export const WalkRunProgramSchema = z.object({
+  /** Starting weekly minutes for the deconditioned / returning on-ramp. ⟨advisor⟩ */
+  startingWeeklyMinutes: z.number().positive(),
+  days: z.array(ProgramDaySchema).length(7),
+});
+export type WalkRunProgram = z.infer<typeof WalkRunProgramSchema>;
+
 // ---- Weekly plan rules ----
 export const WeeklyPlanRulesSchema = z.object({
   /** Minimum share of running that must be easy (spec: ~80%). */
@@ -124,5 +157,7 @@ export const RuleSetSchema = z.object({
   weeklyPlanRules: WeeklyPlanRulesSchema,
   durabilityIndexWeights: DurabilityIndexWeightsSchema,
   durabilityIndexScoring: DurabilityIndexScoringSchema,
+  foundationProgram: FoundationProgramSchema,
+  walkRunProgram: WalkRunProgramSchema,
 });
 export type RuleSet = z.infer<typeof RuleSetSchema>;
