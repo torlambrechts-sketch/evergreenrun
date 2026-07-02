@@ -16,6 +16,452 @@ export type Database = {
   }
   public: {
     Tables: {
+      consent_record: {
+        Row: {
+          consent_type: string
+          created_at: string
+          granted: boolean
+          granted_at: string
+          id: string
+          policy_version: string | null
+          user_id: string
+        }
+        Insert: {
+          consent_type: string
+          created_at?: string
+          granted: boolean
+          granted_at?: string
+          id?: string
+          policy_version?: string | null
+          user_id: string
+        }
+        Update: {
+          consent_type?: string
+          created_at?: string
+          granted?: boolean
+          granted_at?: string
+          id?: string
+          policy_version?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "consent_record_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      durability_index_snapshot: {
+        Row: {
+          breakdown: Json | null
+          computed_at: string
+          consistency_subscore: number | null
+          created_at: string
+          id: string
+          load_subscore: number | null
+          readiness_subscore: number | null
+          rule_set_version: string
+          score: number
+          strength_subscore: number | null
+          user_id: string
+        }
+        Insert: {
+          breakdown?: Json | null
+          computed_at?: string
+          consistency_subscore?: number | null
+          created_at?: string
+          id?: string
+          load_subscore?: number | null
+          readiness_subscore?: number | null
+          rule_set_version: string
+          score: number
+          strength_subscore?: number | null
+          user_id: string
+        }
+        Update: {
+          breakdown?: Json | null
+          computed_at?: string
+          consistency_subscore?: number | null
+          created_at?: string
+          id?: string
+          load_subscore?: number | null
+          readiness_subscore?: number | null
+          rule_set_version?: string
+          score?: number
+          strength_subscore?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "durability_index_snapshot_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      exercise: {
+        Row: {
+          block: string | null
+          category: string | null
+          contraindication_flags: string[]
+          created_at: string
+          id: string
+          instructions: string | null
+          name: string
+          progression_of: string | null
+          regression_of: string | null
+          slug: string
+          tempo: string | null
+          updated_at: string
+        }
+        Insert: {
+          block?: string | null
+          category?: string | null
+          contraindication_flags?: string[]
+          created_at?: string
+          id?: string
+          instructions?: string | null
+          name: string
+          progression_of?: string | null
+          regression_of?: string | null
+          slug: string
+          tempo?: string | null
+          updated_at?: string
+        }
+        Update: {
+          block?: string | null
+          category?: string | null
+          contraindication_flags?: string[]
+          created_at?: string
+          id?: string
+          instructions?: string | null
+          name?: string
+          progression_of?: string | null
+          regression_of?: string | null
+          slug?: string
+          tempo?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "exercise_progression_of_fkey"
+            columns: ["progression_of"]
+            isOneToOne: false
+            referencedRelation: "exercise"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "exercise_regression_of_fkey"
+            columns: ["regression_of"]
+            isOneToOne: false
+            referencedRelation: "exercise"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      feel_log: {
+        Row: {
+          confidence: number | null
+          created_at: string
+          fatigue: number | null
+          id: string
+          logged_at: string
+          morning_stiffness: number | null
+          notes: string | null
+          pain_area: string | null
+          pain_intensity: number | null
+          soreness: number | null
+          user_id: string
+        }
+        Insert: {
+          confidence?: number | null
+          created_at?: string
+          fatigue?: number | null
+          id?: string
+          logged_at?: string
+          morning_stiffness?: number | null
+          notes?: string | null
+          pain_area?: string | null
+          pain_intensity?: number | null
+          soreness?: number | null
+          user_id: string
+        }
+        Update: {
+          confidence?: number | null
+          created_at?: string
+          fatigue?: number | null
+          id?: string
+          logged_at?: string
+          morning_stiffness?: number | null
+          notes?: string | null
+          pain_area?: string | null
+          pain_intensity?: number | null
+          soreness?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "feel_log_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      plan: {
+        Row: {
+          created_at: string
+          id: string
+          program: string | null
+          rule_set_version: string
+          status: string
+          updated_at: string
+          user_id: string
+          week_start: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          program?: string | null
+          rule_set_version: string
+          status?: string
+          updated_at?: string
+          user_id: string
+          week_start: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          program?: string | null
+          rule_set_version?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+          week_start?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "plan_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      planned_session: {
+        Row: {
+          completed: boolean
+          created_at: string
+          day_of_week: number | null
+          id: string
+          notes: string | null
+          plan_id: string
+          run_activity_id: string | null
+          session_type: string
+          target_distance_m: number | null
+          target_duration_s: number | null
+          target_zone: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed?: boolean
+          created_at?: string
+          day_of_week?: number | null
+          id?: string
+          notes?: string | null
+          plan_id: string
+          run_activity_id?: string | null
+          session_type: string
+          target_distance_m?: number | null
+          target_duration_s?: number | null
+          target_zone?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed?: boolean
+          created_at?: string
+          day_of_week?: number | null
+          id?: string
+          notes?: string | null
+          plan_id?: string
+          run_activity_id?: string | null
+          session_type?: string
+          target_distance_m?: number | null
+          target_duration_s?: number | null
+          target_zone?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "planned_session_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "plan"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "planned_session_run_activity_id_fkey"
+            columns: ["run_activity_id"]
+            isOneToOne: false
+            referencedRelation: "run_activity"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "planned_session_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      red_flag_event: {
+        Row: {
+          action_taken: string | null
+          created_at: string
+          feel_log_id: string | null
+          id: string
+          reason: string | null
+          rule_set_version: string | null
+          severity: string
+          user_id: string
+        }
+        Insert: {
+          action_taken?: string | null
+          created_at?: string
+          feel_log_id?: string | null
+          id?: string
+          reason?: string | null
+          rule_set_version?: string | null
+          severity: string
+          user_id: string
+        }
+        Update: {
+          action_taken?: string | null
+          created_at?: string
+          feel_log_id?: string | null
+          id?: string
+          reason?: string | null
+          rule_set_version?: string | null
+          severity?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "red_flag_event_feel_log_id_fkey"
+            columns: ["feel_log_id"]
+            isOneToOne: false
+            referencedRelation: "feel_log"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "red_flag_event_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rule_set: {
+        Row: {
+          config: Json
+          created_at: string
+          id: string
+          is_active: boolean
+          name: string
+          published_at: string | null
+          version: string
+        }
+        Insert: {
+          config?: Json
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name: string
+          published_at?: string | null
+          version: string
+        }
+        Update: {
+          config?: Json
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name?: string
+          published_at?: string | null
+          version?: string
+        }
+        Relationships: []
+      }
+      run_activity: {
+        Row: {
+          avg_hr: number | null
+          avg_pace_s_per_km: number | null
+          created_at: string
+          distance_m: number | null
+          duration_s: number | null
+          id: string
+          raw_payload: Json | null
+          rpe: number | null
+          source: string
+          source_hash: string | null
+          started_at: string | null
+          talk_test: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avg_hr?: number | null
+          avg_pace_s_per_km?: number | null
+          created_at?: string
+          distance_m?: number | null
+          duration_s?: number | null
+          id?: string
+          raw_payload?: Json | null
+          rpe?: number | null
+          source?: string
+          source_hash?: string | null
+          started_at?: string | null
+          talk_test?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avg_hr?: number | null
+          avg_pace_s_per_km?: number | null
+          created_at?: string
+          distance_m?: number | null
+          duration_s?: number | null
+          id?: string
+          raw_payload?: Json | null
+          rpe?: number | null
+          source?: string
+          source_hash?: string | null
+          started_at?: string | null
+          talk_test?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "run_activity_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       runner_profile: {
         Row: {
           age_band: string | null
@@ -54,6 +500,85 @@ export type Database = {
           },
         ]
       }
+      safety_profile: {
+        Row: {
+          contraindications: string[]
+          created_at: string
+          id: string
+          injury_history: Json
+          notes: string | null
+          red_flag_baseline: Json
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          contraindications?: string[]
+          created_at?: string
+          id?: string
+          injury_history?: Json
+          notes?: string | null
+          red_flag_baseline?: Json
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          contraindications?: string[]
+          created_at?: string
+          id?: string
+          injury_history?: Json
+          notes?: string | null
+          red_flag_baseline?: Json
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "safety_profile_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      strength_session: {
+        Row: {
+          created_at: string
+          id: string
+          notes: string | null
+          performed_at: string
+          session_type: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          notes?: string | null
+          performed_at?: string
+          session_type?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          notes?: string | null
+          performed_at?: string
+          session_type?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "strength_session_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       users: {
         Row: {
           created_at: string
@@ -71,6 +596,53 @@ export type Database = {
           id?: string
         }
         Relationships: []
+      }
+      weekly_load: {
+        Row: {
+          acute_load: number | null
+          chronic_load: number | null
+          created_at: string
+          hard_days: number
+          id: string
+          total_distance_m: number
+          total_duration_s: number
+          updated_at: string
+          user_id: string
+          week_start: string
+        }
+        Insert: {
+          acute_load?: number | null
+          chronic_load?: number | null
+          created_at?: string
+          hard_days?: number
+          id?: string
+          total_distance_m?: number
+          total_duration_s?: number
+          updated_at?: string
+          user_id: string
+          week_start: string
+        }
+        Update: {
+          acute_load?: number | null
+          chronic_load?: number | null
+          created_at?: string
+          hard_days?: number
+          id?: string
+          total_distance_m?: number
+          total_duration_s?: number
+          updated_at?: string
+          user_id?: string
+          week_start?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "weekly_load_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
