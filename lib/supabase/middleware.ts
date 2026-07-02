@@ -4,7 +4,7 @@ import { createServerClient } from "@supabase/ssr";
 import type { Database } from "@/lib/types/database.types";
 
 /** Routes a signed-out user is allowed to reach. Everything else requires auth. */
-const PUBLIC_PATHS = ["/", "/login", "/auth"];
+const PUBLIC_PATHS = ["/", "/login", "/auth", "/calculator"];
 
 function isPublicPath(pathname: string): boolean {
   return PUBLIC_PATHS.some(

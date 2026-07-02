@@ -16,6 +16,27 @@ export type Database = {
   }
   public: {
     Tables: {
+      calculator_lead: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          score: number | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          score?: number | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          score?: number | null
+        }
+        Relationships: []
+      }
       consent_record: {
         Row: {
           consent_type: string
