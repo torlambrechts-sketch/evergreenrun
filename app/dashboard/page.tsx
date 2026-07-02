@@ -1,8 +1,9 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { createClient } from "@/lib/supabase/server";
 import { getMyRunnerProfile } from "@/lib/db/runner-profile";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -39,6 +40,9 @@ export default async function DashboardPage() {
               ? "Your runner profile is ready. Next up: logging a run."
               : "We'll set up your runner profile next."}
           </p>
+          <Link href="/runs" className={buttonVariants()}>
+            My runs
+          </Link>
           <form action="/auth/signout" method="post">
             <Button type="submit" variant="outline">
               Sign out
