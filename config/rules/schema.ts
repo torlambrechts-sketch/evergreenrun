@@ -76,6 +76,43 @@ export type DurabilityIndexWeights = z.infer<
   typeof DurabilityIndexWeightsSchema
 >;
 
+// ---- Durability Index scoring parameters ----
+// How each raw signal maps to a 0..100 sub-score. All ⟨advisor⟩ owned.
+export const DurabilityIndexScoringSchema = z.object({
+  load: z
+    .object({
+      /** Acute:chronic workload ratio band scored as 100. ⟨advisor⟩ */
+      idealAcwrLow: z.number().min(0),
+      idealAcwrHigh: z.number().min(0),
+      /** ACWR deviation beyond the ideal band at which the sub-score hits 0. ⟨advisor⟩ */
+      zeroAtDeviation: z.number().gt(0),
+      /** Fallback sub-score when there is not enough chronic-load history. ⟨advisor⟩ */
+      noChronicLoadSubScore: z.number().min(0).max(100),
+    })
+    .refine((v) => v.idealAcwrLow <= v.idealAcwrHigh, {
+      message: "idealAcwrLow must be <= idealAcwrHigh",
+      path: ["idealAcwrLow"],
+    }),
+  strength: z.object({
+    /** Strength days/week that scores 100. ⟨advisor⟩ (spec: two) */
+    targetDaysPerWeek: z.number().int().min(1),
+  }),
+  consistency: z.object({
+    /** Look-back window (weeks) for the consistency sub-score. ⟨advisor⟩ */
+    windowWeeks: z.number().int().min(1),
+  }),
+  readiness: z.object({
+    /** Relative weight of physical freshness vs. self-reported confidence. ⟨advisor⟩ */
+    freshnessWeight: z.number().min(0),
+    confidenceWeight: z.number().min(0),
+    /** Fallback sub-score when no feel-log is available. ⟨advisor⟩ */
+    noFeelSubScore: z.number().min(0).max(100),
+  }),
+});
+export type DurabilityIndexScoring = z.infer<
+  typeof DurabilityIndexScoringSchema
+>;
+
 // ---- The assembled, versioned rule set ----
 export const RuleSetSchema = z.object({
   /** Version stamp carried onto every Plan / snapshot the engine produces. */
@@ -86,5 +123,6 @@ export const RuleSetSchema = z.object({
   intensityZones: z.array(IntensityZoneSchema).min(1),
   weeklyPlanRules: WeeklyPlanRulesSchema,
   durabilityIndexWeights: DurabilityIndexWeightsSchema,
+  durabilityIndexScoring: DurabilityIndexScoringSchema,
 });
 export type RuleSet = z.infer<typeof RuleSetSchema>;
