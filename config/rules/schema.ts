@@ -146,6 +146,29 @@ export type DurabilityIndexScoring = z.infer<
   typeof DurabilityIndexScoringSchema
 >;
 
+// ---- Safety: the pain-monitoring boundary ----
+const rating0to10 = z.number().int().min(0).max(10);
+export const SafetyRulesSchema = z.object({
+  painMonitoring: z
+    .object({
+      /** Pain ≤ this AND settling → continue + monitor (spec: ≤4/10). */
+      continueMaxIntensity: rating0to10,
+      /** Pain ≥ this (and below clinician) → downshift (spec: 5–6). */
+      downshiftMinIntensity: rating0to10,
+      /** Pain ≥ this → route to a clinician, no training tweak. ⟨advisor⟩ */
+      clinicianMinIntensity: rating0to10,
+      /** Window in which a niggle should be settling (spec: 24h). */
+      settlingWindowHours: z.number().int().positive(),
+    })
+    .refine(
+      (v) =>
+        v.continueMaxIntensity < v.downshiftMinIntensity &&
+        v.downshiftMinIntensity <= v.clinicianMinIntensity,
+      { message: "pain thresholds must be ordered: continue < downshift <= clinician" },
+    ),
+});
+export type SafetyRules = z.infer<typeof SafetyRulesSchema>;
+
 // ---- The assembled, versioned rule set ----
 export const RuleSetSchema = z.object({
   /** Version stamp carried onto every Plan / snapshot the engine produces. */
@@ -159,5 +182,6 @@ export const RuleSetSchema = z.object({
   durabilityIndexScoring: DurabilityIndexScoringSchema,
   foundationProgram: FoundationProgramSchema,
   walkRunProgram: WalkRunProgramSchema,
+  safetyRules: SafetyRulesSchema,
 });
 export type RuleSet = z.infer<typeof RuleSetSchema>;
