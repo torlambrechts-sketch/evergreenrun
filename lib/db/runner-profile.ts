@@ -28,3 +28,26 @@ export async function getMyRunnerProfile(): Promise<RunnerProfile | null> {
   if (error) throw error;
   return data;
 }
+
+/** Update the signed-in user's runner profile (RLS-scoped). */
+export async function updateMyRunnerProfile(input: {
+  displayName?: string;
+  ageBand?: string;
+  experienceLevel?: string;
+}): Promise<void> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) throw new Error("Not authenticated");
+
+  const { error } = await supabase
+    .from("runner_profile")
+    .update({
+      display_name: input.displayName ?? null,
+      age_band: input.ageBand ?? null,
+      experience_level: input.experienceLevel ?? null,
+    })
+    .eq("user_id", user.id);
+  if (error) throw error;
+}
