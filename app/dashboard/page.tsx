@@ -40,7 +40,10 @@ export default async function DashboardPage() {
               ? "Your runner profile is ready. Next up: logging a run."
               : "We'll set up your runner profile next."}
           </p>
-          <Link href="/plan" className={buttonVariants()}>
+          <Link href="/coach" className={buttonVariants()}>
+            My weekly note
+          </Link>
+          <Link href="/plan" className={buttonVariants({ variant: "outline" })}>
             This week&apos;s plan
           </Link>
           <Link href="/strength" className={buttonVariants({ variant: "outline" })}>
